@@ -79,6 +79,34 @@ plt.imshow(transformed_img)
 plt.axis(False)
 plt.show()
 
-            
+#Pooling    
+#Similar to convolutions, pooling greatly helps with detecting features. 
+#Pooling layers reduce the overall amount of information in an image while maintaining the features that are detected as present.       
         
+#MAX pooling - The idea here is to iterate over the image, and look at the pixel 
+#and it's immediate neighbors to the right, beneath, and right-beneath.
+#Take the largest (hence the name MAX pooling) of them and load it into the new image. 
+#Thus the new image will be 1/4 the size of the old 
         
+new_x = int(size_x/2)
+new_y = int(size_y/2)
+newImage = np.zeros((new_x, new_y))
+for x in range(0, size_x, 2):
+  for y in range(0, size_y, 2):
+    pixels = []
+    pixels.append(transformed_img[x, y])
+    pixels.append(transformed_img[x+1, y])
+    pixels.append(transformed_img[x, y+1])
+    pixels.append(transformed_img[x+1, y+1])
+    pixels.sort(reverse=True)
+    newImage[int(x/2),int(y/2)] = pixels[0]
+
+# Plot the image. Note the size of the axes -- now 256 pixels instead of 512
+plt.gray()
+plt.grid(False)
+plt.imshow(newImage)
+plt.axis('off')
+plt.show() 
+
+#This code will show a (2, 2) pooling.Run it to see the output,
+#and you'll see that while the image is 1/4 the size of the original, the extracted features are maintained!
